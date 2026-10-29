@@ -25,12 +25,17 @@ export function lerRespostaGemini(json) {
   return JSON.parse(limpo);
 }
 
-async function perguntarGemini(sistema, pedido, chave) {
+async function perguntarGemini(sistema, pedido, chave, etapa = "pedido") {
   let erro;
   for (let i = 1; i <= 3; i++) {
+    const ctrl = new AbortController();
+    const limite = setTimeout(() => ctrl.abort(), 90_000); // no máximo 90 segundos por tentativa
+    const inicio = Date.now();
+    console.log(`  → Gemini (${etapa}), tentativa ${i}/3...`);
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`, {
         method: "POST",
+        signal: ctrl.signal,
         headers: { "Content-Type": "application/json", "x-goog-api-key": chave },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: sistema }] },
@@ -40,10 +45,15 @@ async function perguntarGemini(sistema, pedido, chave) {
       });
       const json = await r.json();
       if (!r.ok) throw new Error(`HTTP ${r.status}: ${json?.error?.message || "erro desconhecido"}`);
-      return lerRespostaGemini(json);
+      const resposta = lerRespostaGemini(json);
+      console.log(`  ✔ Gemini respondeu em ${Math.round((Date.now() - inicio) / 1000)}s`);
+      return resposta;
     } catch (e) {
-      erro = e;
+      erro = e.name === "AbortError" ? new Error("o Gemini não respondeu em 90 segundos") : e;
+      console.log(`  ✘ ${erro.message}`);
       if (i < 3) await esperar(4000 * i);
+    } finally {
+      clearTimeout(limite);
     }
   }
   throw erro;
@@ -121,6 +131,8 @@ async function principal() {
   const agoraBR = agora();
 
   // 1. Placar das consultas públicas
+  console.log(`Modelo: ${MODELO}`);
+  console.log("1/3 Atualizando placar das consultas públicas");
   for (const a of alertasArq.alertas.filter((x) => x.consulta?.url)) {
     try {
       const pagina = textoDaPagina(await baixar(a.consulta.url, { tipo: "texto" }));
@@ -130,7 +142,7 @@ async function principal() {
 Responda {"sim": número inteiro, "nao": número inteiro, "apurado_em": "data e hora mostrada na página, se houver, no formato AAAA-MM-DDTHH:MM"} ou {"sim": null, "nao": null} se não encontrar.
 
 PÁGINA:
-${pagina}`, chave);
+${pagina}`, chave, `placar ${a.numero}`);
       if (placarCoerente(a.consulta, r)) {
         const mudou = r.sim !== a.consulta.sim || r.nao !== a.consulta.nao;
         a.consulta.sim = r.sim;
@@ -152,6 +164,7 @@ ${pagina}`, chave);
   await salvarJSON(resolve(DADOS, "alertas.json"), alertasArq);
 
   // 2. Boletim
+  console.log("2/3 Escrevendo o boletim");
   const noticias = pauta?.noticias || [];
   const proposicoes = pauta?.proposicoes || [];
   if (!noticias.length && !proposicoes.length) {
@@ -185,7 +198,7 @@ PROJETOS APRESENTADOS NA CÂMARA NOS ÚLTIMOS DIAS:
 ${proposicoes.map((p) => `- ${p.numero} [${p.temas.join(", ")}]: ${p.ementa} | ${p.url}`).join("\n") || "(nenhum)"}`;
 
     try {
-      const r = await perguntarGemini(SISTEMA, pedido, chave);
+      const r = await perguntarGemini(SISTEMA, pedido, chave, "boletim");
       const { manchete, itens, descartados } = filtrarEdicao(r, links);
       if (!manchete || !itens.length) throw new Error("a resposta não trouxe manchete ou itens válidos");
       const { id, hora } = idEdicao(agoraBR);
@@ -204,6 +217,7 @@ ${proposicoes.map((p) => `- ${p.numero} [${p.temas.join(", ")}]: ${p.ementa} | $
   }
 
   // 3. Relatório para quem revisa
+  console.log("3/3 Relatório");
   const secao = (titulo, lista) => `## ${titulo}\n\n${lista.length ? lista.map((x) => `- ${x}`).join("\n") : "- Nada."}\n`;
   const md = [
     `# Rascunhos do robô (Gemini, modelo ${MODELO})\n`,
