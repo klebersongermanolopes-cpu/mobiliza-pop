@@ -1,0 +1,222 @@
+// Escritor do boletim usando o Gemini (Google). Alternativa à skill /boletim-diario do Claude Code.
+//
+// Diferente de um agente solto, este script controla tudo:
+//   - entrega ao Gemini só a pauta coletada (títulos, links, veículos);
+//   - aceita de volta apenas itens cujo link veio da pauta ou dos alertas (a IA não consegue inventar fonte);
+//   - atualiza o placar das consultas só se os números novos forem coerentes (votos só aumentam);
+//   - grava o boletim, roda as regras do validador e escreve o relatório para a equipe revisar.
+//
+// Uso: GEMINI_API_KEY=... node robo/escrever-ia.mjs
+//      Opcional: GEMINI_MODEL (padrão: gemini-flash-latest)
+import { resolve } from "node:path";
+import { writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+import { DADOS, PAUTA, lerJSON, salvarJSON, hoje, agora, baixar, esperar, limpar } from "./lib.mjs";
+
+const MODELO = process.env.GEMINI_MODEL || "gemini-flash-latest";
+const MAX_EDICOES = 30;
+const TIPOS = ["alerta", "noticia", "agenda", "checagem"];
+
+/* ---------- Gemini ---------- */
+export function lerRespostaGemini(json) {
+  const texto = (json?.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("").trim();
+  if (!texto) throw new Error("o Gemini não devolveu texto" + (json?.promptFeedback?.blockReason ? ` (bloqueado: ${json.promptFeedback.blockReason})` : ""));
+  const limpo = texto.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+  return JSON.parse(limpo);
+}
+
+async function perguntarGemini(sistema, pedido, chave) {
+  let erro;
+  for (let i = 1; i <= 3; i++) {
+    try {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": chave },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: sistema }] },
+          contents: [{ role: "user", parts: [{ text: pedido }] }],
+          generationConfig: { temperature: 0.3, responseMimeType: "application/json" },
+        }),
+      });
+      const json = await r.json();
+      if (!r.ok) throw new Error(`HTTP ${r.status}: ${json?.error?.message || "erro desconhecido"}`);
+      return lerRespostaGemini(json);
+    } catch (e) {
+      erro = e;
+      if (i < 3) await esperar(4000 * i);
+    }
+  }
+  throw erro;
+}
+
+/* ---------- regras de segurança (funções puras, testadas) ---------- */
+const corta = (s, max) => { const t = limpar(s); return t.length > max ? t.slice(0, max - 1).trimEnd() + "…" : t; };
+
+// Mantém só itens válidos e com link conhecido. Itens de agenda e alerta podem vir sem link.
+export function filtrarEdicao(resposta, linksPermitidos) {
+  const descartados = [];
+  const itens = [];
+  for (const it of Array.isArray(resposta?.itens) ? resposta.itens : []) {
+    const tipo = TIPOS.includes(it?.tipo) ? it.tipo : null;
+    const url = it?.url ? String(it.url).trim() : null;
+    const titulo = corta(it?.titulo, 110);
+    const texto = corta(it?.texto, 400);
+    if (!tipo || !titulo || !texto) { descartados.push(`item incompleto: ${titulo || "(sem título)"}`); continue; }
+    if (url && !linksPermitidos.has(url)) { descartados.push(`link fora da pauta: ${url}`); continue; }
+    if (!url && (tipo === "noticia" || tipo === "checagem")) { descartados.push(`notícia sem link: ${titulo}`); continue; }
+    itens.push({ tipo, titulo, texto, url, fonte: it?.fonte ? corta(it.fonte, 60) : null });
+    if (itens.length === 6) break;
+  }
+  const manchete = corta(resposta?.manchete, 120);
+  return { manchete, itens, descartados };
+}
+
+export function idEdicao(dataHoraISO) {
+  const hora = Number(dataHoraISO.slice(11, 13));
+  return { id: `${dataHoraISO.slice(0, 10)}-${hora < 13 ? "manha" : "tarde"}`, hora: `${hora}h` };
+}
+
+export function aplicarEdicao(boletim, edicao) {
+  const edicoes = (boletim?.edicoes || []).filter((e) => !e.exemplo && e.id !== edicao.id);
+  return { atualizado_em: edicao.data, edicoes: [edicao, ...edicoes].slice(0, MAX_EDICOES) };
+}
+
+// Votos de consulta só aumentam: número menor ou absurdo é descartado.
+export function placarCoerente(antigo, novo) {
+  if (!novo || !Number.isInteger(novo.sim) || !Number.isInteger(novo.nao)) return false;
+  if (novo.sim < (antigo?.sim || 0) || novo.nao < (antigo?.nao || 0)) return false;
+  if (novo.sim + novo.nao > 50_000_000) return false;
+  return true;
+}
+
+function textoDaPagina(html) {
+  return String(html)
+    .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .slice(0, 20000);
+}
+
+/* ---------- execução ---------- */
+const SISTEMA = `Você escreve rascunhos para o Mobiliza Pop, portal independente de notícias e mobilização popular.
+Regras obrigatórias:
+- Use SOMENTE as informações fornecidas. Não invente fatos, números, nomes, datas ou citações.
+- Cada item de notícia deve usar exatamente um link da lista fornecida, sem alterar o endereço.
+- Escreva com suas palavras, em português do Brasil correto e acentuado, frases curtas, linguagem simples, tratando o leitor por "você".
+- Tom firme e sem ofensas. Nada de xingamentos ou apelidos.
+- Investigado, denunciado e condenado são coisas diferentes: use o termo que a fonte usa.
+- Se a informação não for suficiente, deixe o item de fora.
+Responda apenas com JSON válido.`;
+
+async function principal() {
+  const chave = process.env.GEMINI_API_KEY;
+  if (!chave) { console.error("✘ Falta a variável GEMINI_API_KEY."); process.exit(1); }
+
+  const relatorio = { mudou: [], conferir: [], sugestoes: [], falhou: [] };
+  const pauta = await lerJSON(resolve(PAUTA, "pauta.json"));
+  const alertasArq = await lerJSON(resolve(DADOS, "alertas.json"), { alertas: [] });
+  const agenda = await lerJSON(resolve(DADOS, "agenda.json"), { eventos: [] });
+  const boletim = await lerJSON(resolve(DADOS, "boletim.json"), { edicoes: [] });
+  const agoraBR = agora();
+
+  // 1. Placar das consultas públicas
+  for (const a of alertasArq.alertas.filter((x) => x.consulta?.url)) {
+    try {
+      const pagina = textoDaPagina(await baixar(a.consulta.url, { tipo: "texto" }));
+      const r = await perguntarGemini(
+        "Você extrai números de páginas oficiais. Responda só com JSON.",
+        `Na página da consulta pública abaixo, encontre o total de votos SIM e o total de votos NÃO.
+Responda {"sim": número inteiro, "nao": número inteiro, "apurado_em": "data e hora mostrada na página, se houver, no formato AAAA-MM-DDTHH:MM"} ou {"sim": null, "nao": null} se não encontrar.
+
+PÁGINA:
+${pagina}`, chave);
+      if (placarCoerente(a.consulta, r)) {
+        const mudou = r.sim !== a.consulta.sim || r.nao !== a.consulta.nao;
+        a.consulta.sim = r.sim;
+        a.consulta.nao = r.nao;
+        a.consulta.apurado_em = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(r.apurado_em || "") ? r.apurado_em.slice(0, 16) + ":00-03:00" : agoraBR;
+        a.atualizado_em = hoje();
+        if (mudou) relatorio.mudou.push(`Placar de ${a.numero}: SIM ${r.sim.toLocaleString("pt-BR")} × NÃO ${r.nao.toLocaleString("pt-BR")}`);
+        const lider = r.nao >= r.sim ? "NÃO" : "SIM";
+        if (!(a.mensagem_whatsapp || "").includes(`O ${lider} está na frente`)) {
+          relatorio.conferir.push(`${a.numero}: agora o ${lider} lidera. Confira se a mensagem de WhatsApp e o título do capítulo "Placar" ainda fazem sentido.`);
+        }
+      } else {
+        relatorio.falhou.push(`Placar de ${a.numero}: números não encontrados ou incoerentes na página. Mantido o anterior.`);
+      }
+    } catch (e) {
+      relatorio.falhou.push(`Placar de ${a.numero}: ${e.message}`);
+    }
+  }
+  await salvarJSON(resolve(DADOS, "alertas.json"), alertasArq);
+
+  // 2. Boletim
+  const noticias = pauta?.noticias || [];
+  const proposicoes = pauta?.proposicoes || [];
+  if (!noticias.length && !proposicoes.length) {
+    relatorio.falhou.push("A coleta não trouxe notícias nem projetos. Nenhuma edição foi criada.");
+  } else {
+    const links = new Set([
+      ...noticias.map((n) => n.url),
+      ...alertasArq.alertas.flatMap((a) => [a.consulta?.url, a.acao?.url, ...(a.fontes || []).map((f) => f.url)]).filter(Boolean),
+      ...agenda.eventos.map((e) => e.url).filter(Boolean),
+    ]);
+    const pedido = `Hoje é ${agoraBR.slice(0, 10)}. Monte a edição do boletim com 3 a 6 itens, nesta prioridade:
+1) alertas ativos com novidade; 2) notícias ligadas aos temas que afetam direitos da população; 3) datas da agenda dos próximos 7 dias.
+Descarte notícias repetidas (mesmo fato em veículos diferentes: fique com a fonte mais confiável) e boatos.
+
+Responda neste formato:
+{"manchete": "frase curta com o fato mais importante (até 120 caracteres)",
+ "itens": [{"tipo": "alerta|noticia|agenda", "titulo": "com suas palavras, até 90 caracteres", "texto": "1 ou 2 frases, só com o que o título e o veículo sustentam", "url": "link exato da lista ou null", "fonte": "nome do veículo ou null"}],
+ "sugestoes_alerta": [{"numero": "PL x/aaaa", "url": "link exato da lista de projetos", "motivo": "uma frase dizendo por que merece atenção"}],
+ "duvidas": ["pontos que a equipe deve conferir"]}
+
+ALERTAS ATIVOS:
+${JSON.stringify(alertasArq.alertas.map((a) => ({ numero: a.numero, titulo: a.titulo, situacao: a.situacao, consulta: a.consulta ? { url: a.consulta.url, sim: a.consulta.sim, nao: a.consulta.nao } : null })), null, 1)}
+
+AGENDA:
+${JSON.stringify(agenda.eventos.filter((e) => !e.exemplo).map((e) => ({ data: e.data || e.rotulo_data, titulo: e.titulo, url: e.url })), null, 1)}
+
+NOTÍCIAS COLETADAS (tema, título, veículo, link):
+${noticias.map((n) => `- [${n.tema}] ${n.titulo} | ${n.fonte || "?"} | ${n.url}`).join("\n")}
+
+PROJETOS APRESENTADOS NA CÂMARA NOS ÚLTIMOS DIAS:
+${proposicoes.map((p) => `- ${p.numero} [${p.temas.join(", ")}]: ${p.ementa} | ${p.url}`).join("\n") || "(nenhum)"}`;
+
+    try {
+      const r = await perguntarGemini(SISTEMA, pedido, chave);
+      const { manchete, itens, descartados } = filtrarEdicao(r, links);
+      if (!manchete || !itens.length) throw new Error("a resposta não trouxe manchete ou itens válidos");
+      const { id, hora } = idEdicao(agoraBR);
+      const edicao = { id, data: agoraBR.slice(0, 10), hora, exemplo: false, gerado_por_ia: true, manchete, itens };
+      await salvarJSON(resolve(DADOS, "boletim.json"), aplicarEdicao(boletim, edicao));
+      relatorio.mudou.push(`Boletim ${id}: "${manchete}" com ${itens.length} itens`);
+      descartados.forEach((d) => relatorio.conferir.push(`Descartado automaticamente: ${d}`));
+      (Array.isArray(r.duvidas) ? r.duvidas : []).forEach((d) => relatorio.conferir.push(limpar(d)));
+      const linksProjetos = new Set(proposicoes.map((p) => p.url));
+      (Array.isArray(r.sugestoes_alerta) ? r.sugestoes_alerta : [])
+        .filter((s) => linksProjetos.has(s?.url))
+        .forEach((s) => relatorio.sugestoes.push(`${limpar(s.numero)}: ${limpar(s.motivo)} (${s.url})`));
+    } catch (e) {
+      relatorio.falhou.push(`Boletim: ${e.message}`);
+    }
+  }
+
+  // 3. Relatório para quem revisa
+  const secao = (titulo, lista) => `## ${titulo}\n\n${lista.length ? lista.map((x) => `- ${x}`).join("\n") : "- Nada."}\n`;
+  const md = [
+    `# Rascunhos do robô (Gemini, modelo ${MODELO})\n`,
+    "Tudo aqui foi escrito por IA. Leia na aba **Files changed** antes de aprovar. Para corrigir, edite o arquivo direto no GitHub.\n",
+    secao("O que mudou", relatorio.mudou),
+    secao("Conferir com atenção", relatorio.conferir),
+    secao("Sugestões de novos alertas", relatorio.sugestoes),
+    secao("O que falhou", relatorio.falhou),
+  ].join("\n");
+  await writeFile(resolve(PAUTA, "relatorio.md"), md, "utf8");
+  console.log(md);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await principal();
+}

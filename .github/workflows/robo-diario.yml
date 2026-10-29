@@ -1,5 +1,6 @@
-# Robô diário: coleta dados públicos, a IA escreve os rascunhos e abre um pedido de revisão (pull request).
+# Robô diário: coleta dados públicos, o Gemini escreve os rascunhos e abre um pedido de revisão (pull request).
 # Nada é publicado sem uma pessoa aprovar o pull request.
+# Usa a chave gratuita do Gemini (https://aistudio.google.com/apikey), guardada no segredo GEMINI_API_KEY.
 name: Robô diário
 
 on:
@@ -11,7 +12,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
 
 concurrency:
   group: robo-diario
@@ -28,20 +28,22 @@ jobs:
         with:
           node-version: 22
 
+      - name: Conferir se a chave do Gemini está cadastrada
+        env:
+          CHAVE: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$CHAVE" ]; then
+            echo "::error::Falta o segredo GEMINI_API_KEY em Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
       - name: Coletar dados públicos (Câmara, Senado, notícias)
         run: node robo/coletar.mjs
 
-      - name: IA escreve os rascunhos
-        uses: anthropics/claude-code-action@v1
-        with:
-          # Assinatura do Claude (token gerado com "claude setup-token").
-          # Para usar chave de API no lugar, troque a linha abaixo por:
-          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: "/boletim-diario"
-          claude_args: |
-            --max-turns 40
-            --allowedTools "Read,Write,Edit,Glob,Grep,WebFetch,Bash(node robo/validar.mjs)"
+      - name: Gemini escreve os rascunhos
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node robo/escrever-ia.mjs
 
       - name: Conferir o conteúdo
         run: node robo/validar.mjs
