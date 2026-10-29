@@ -55,15 +55,18 @@ Abra http://localhost:8080. Para testar o robô de coleta: `npm run coletar`. Pa
    ```
    Ou peça ao Claude Code: "suba este projeto para um repositório novo no GitHub".
 
-### 2.2 Cloudflare Pages (gratuito)
-1. Em dash.cloudflare.com: **Workers & Pages > Create > Pages > Connect to Git** e escolha o repositório.
-2. Configuração do build:
-   - Build command: `node robo/validar.mjs`
-   - Build output directory: `site`
-   - Variável de ambiente: `NODE_VERSION` = `22`
-3. Salve. O site sai num endereço `*.pages.dev`. Em **Custom domains** você liga o domínio (ex.: mobilizapop.com.br).
+### 2.2 Publicar o site (gratuito)
 
-Como o build roda o validador, conteúdo com erro nunca chega ao ar.
+**Opção A: GitHub Pages** (exige repositório público no plano grátis)
+1. **Settings > General**, no fim da página, em **Danger Zone > Change visibility > Public**.
+2. **Settings > Pages > Build and deployment > Source: GitHub Actions**.
+3. **Actions > Publicar site > Run workflow**. O site sai em `https://SEU-USUARIO.github.io/mobiliza-pop/`.
+
+Depois disso, todo merge na `main` republica o site sozinho, sempre passando pelo validador antes.
+
+**Opção B: Cloudflare Pages** (funciona com repositório privado)
+1. Em dash.cloudflare.com: **Workers & Pages > Create > Pages > Connect to Git** e escolha o repositório.
+2. Build command: `node robo/validar.mjs`, Build output directory: `site`, variável `NODE_VERSION` = `22`.
 
 ## 3. Ligar a IA no GitHub (gratuito)
 
