@@ -7,13 +7,16 @@
 //   - grava o boletim, roda as regras do validador e escreve o relatório para a equipe revisar.
 //
 // Uso: GEMINI_API_KEY=... node robo/escrever-ia.mjs
-//      Opcional: GEMINI_MODEL (padrão: gemini-flash-latest)
+//      Opcional: GEMINI_MODEL (modelo preferido; se falhar, tenta os da lista MODELOS)
 import { resolve } from "node:path";
 import { writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { DADOS, PAUTA, lerJSON, salvarJSON, hoje, agora, baixar, esperar, limpar } from "./lib.mjs";
 
-const MODELO = process.env.GEMINI_MODEL || "gemini-flash-latest";
+// Modelos tentados em ordem. Se um não existir ou não responder, passa para o próximo.
+const MODELOS = [...new Set([process.env.GEMINI_MODEL, "gemini-2.5-flash-lite", "gemini-flash-lite-latest", "gemini-2.5-flash", "gemini-flash-latest"].filter(Boolean))];
+let modeloAtual = 0;
+const nomeModelo = () => MODELOS[modeloAtual] || MODELOS[MODELOS.length - 1];
 const MAX_EDICOES = 30;
 const TIPOS = ["alerta", "noticia", "agenda", "checagem"];
 
@@ -25,38 +28,75 @@ export function lerRespostaGemini(json) {
   return JSON.parse(limpo);
 }
 
+async function chamarModelo(modelo, sistema, pedido, chave) {
+  const ctrl = new AbortController();
+  const limite = setTimeout(() => ctrl.abort(), 60_000); // no máximo 60 segundos por tentativa
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`, {
+      method: "POST",
+      signal: ctrl.signal,
+      headers: { "Content-Type": "application/json", "x-goog-api-key": chave },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: sistema }] },
+        contents: [{ role: "user", parts: [{ text: pedido }] }],
+        generationConfig: { temperature: 0.3, responseMimeType: "application/json" },
+      }),
+    });
+    const json = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const e = new Error(`HTTP ${r.status}: ${json?.error?.message || "erro desconhecido"}`);
+      e.status = r.status;
+      throw e;
+    }
+    return lerRespostaGemini(json);
+  } catch (e) {
+    if (e.name === "AbortError") { const t = new Error("não respondeu em 60 segundos"); t.status = "tempo"; throw t; }
+    throw e;
+  } finally {
+    clearTimeout(limite);
+  }
+}
+
+// Tenta o modelo atual; em limite de uso (429) ou instabilidade (5xx) espera e repete uma vez;
+// se o modelo não existir, travar ou falhar de outro jeito, passa para o próximo da lista.
 async function perguntarGemini(sistema, pedido, chave, etapa = "pedido") {
   let erro;
-  for (let i = 1; i <= 3; i++) {
-    const ctrl = new AbortController();
-    const limite = setTimeout(() => ctrl.abort(), 90_000); // no máximo 90 segundos por tentativa
-    const inicio = Date.now();
-    console.log(`  → Gemini (${etapa}), tentativa ${i}/3...`);
-    try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`, {
-        method: "POST",
-        signal: ctrl.signal,
-        headers: { "Content-Type": "application/json", "x-goog-api-key": chave },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: sistema }] },
-          contents: [{ role: "user", parts: [{ text: pedido }] }],
-          generationConfig: { temperature: 0.3, responseMimeType: "application/json" },
-        }),
-      });
-      const json = await r.json();
-      if (!r.ok) throw new Error(`HTTP ${r.status}: ${json?.error?.message || "erro desconhecido"}`);
-      const resposta = lerRespostaGemini(json);
-      console.log(`  ✔ Gemini respondeu em ${Math.round((Date.now() - inicio) / 1000)}s`);
-      return resposta;
-    } catch (e) {
-      erro = e.name === "AbortError" ? new Error("o Gemini não respondeu em 90 segundos") : e;
-      console.log(`  ✘ ${erro.message}`);
-      if (i < 3) await esperar(4000 * i);
-    } finally {
-      clearTimeout(limite);
+  while (modeloAtual < MODELOS.length) {
+    const modelo = MODELOS[modeloAtual];
+    for (let tentativa = 1; tentativa <= 2; tentativa++) {
+      const inicio = Date.now();
+      console.log(`  → ${modelo} (${etapa}), tentativa ${tentativa}...`);
+      try {
+        const resposta = await chamarModelo(modelo, sistema, pedido, chave);
+        console.log(`  ✔ respondeu em ${Math.round((Date.now() - inicio) / 1000)}s`);
+        return resposta;
+      } catch (e) {
+        erro = e;
+        console.log(`  ✘ ${e.message}`);
+        if (e.status === 401 || e.status === 403) throw new Error(`a chave GEMINI_API_KEY foi recusada (${e.message})`);
+        const repetir = e.status === 429 || (typeof e.status === "number" && e.status >= 500);
+        if (!repetir) break;
+        await esperar(e.status === 429 ? 20_000 : 5_000);
+      }
     }
+    modeloAtual++;
+    if (modeloAtual < MODELOS.length) console.log(`  ↪ trocando para ${MODELOS[modeloAtual]}`);
   }
-  throw erro;
+  modeloAtual = MODELOS.length - 1;
+  throw erro || new Error("nenhum modelo do Gemini respondeu");
+}
+
+// Lê o placar direto do texto da página do e-Cidadania, sem IA.
+export function lerPlacarDaPagina(texto) {
+  const num = (s) => Number(String(s).replace(/\./g, ""));
+  const achar = (rotulo) => {
+    const m = new RegExp(`\\b${rotulo}\\b[^\\d]{0,25}?(\\d{1,3}(?:\\.\\d{3})+|\\d+)`).exec(texto);
+    return m ? num(m[1]) : null;
+  };
+  const sim = achar("SIM");
+  const nao = achar("N[ÃA]O");
+  const d = /(\d{2})\/(\d{2})\/(\d{4}),?\s*(?:às\s*)?(\d{2}):(\d{2})/.exec(texto);
+  return { sim, nao, apurado_em: d ? `${d[3]}-${d[2]}-${d[1]}T${d[4]}:${d[5]}` : null };
 }
 
 /* ---------- regras de segurança (funções puras, testadas) ---------- */
@@ -131,18 +171,23 @@ async function principal() {
   const agoraBR = agora();
 
   // 1. Placar das consultas públicas
-  console.log(`Modelo: ${MODELO}`);
+  console.log(`Modelos na ordem: ${MODELOS.join(", ")}`);
   console.log("1/3 Atualizando placar das consultas públicas");
   for (const a of alertasArq.alertas.filter((x) => x.consulta?.url)) {
     try {
       const pagina = textoDaPagina(await baixar(a.consulta.url, { tipo: "texto" }));
-      const r = await perguntarGemini(
+      let r = lerPlacarDaPagina(pagina);
+      if (placarCoerente(a.consulta, r)) console.log(`  ✔ placar lido direto da página: SIM ${r.sim} × NÃO ${r.nao}`);
+      else {
+      const pos = Math.max(0, pagina.search(/\bSIM\b/));
+      r = await perguntarGemini(
         "Você extrai números de páginas oficiais. Responda só com JSON.",
         `Na página da consulta pública abaixo, encontre o total de votos SIM e o total de votos NÃO.
 Responda {"sim": número inteiro, "nao": número inteiro, "apurado_em": "data e hora mostrada na página, se houver, no formato AAAA-MM-DDTHH:MM"} ou {"sim": null, "nao": null} se não encontrar.
 
 PÁGINA:
-${pagina}`, chave, `placar ${a.numero}`);
+${pagina.slice(Math.max(0, pos - 1500), pos + 1500)}`, chave, `placar ${a.numero}`);
+      }
       if (placarCoerente(a.consulta, r)) {
         const mudou = r.sim !== a.consulta.sim || r.nao !== a.consulta.nao;
         a.consulta.sim = r.sim;
@@ -220,7 +265,7 @@ ${proposicoes.map((p) => `- ${p.numero} [${p.temas.join(", ")}]: ${p.ementa} | $
   console.log("3/3 Relatório");
   const secao = (titulo, lista) => `## ${titulo}\n\n${lista.length ? lista.map((x) => `- ${x}`).join("\n") : "- Nada."}\n`;
   const md = [
-    `# Rascunhos do robô (Gemini, modelo ${MODELO})\n`,
+    `# Rascunhos do robô (Gemini, modelo ${nomeModelo()})\n`,
     "Tudo aqui foi escrito por IA. Leia na aba **Files changed** antes de aprovar. Para corrigir, edite o arquivo direto no GitHub.\n",
     secao("O que mudou", relatorio.mudou),
     secao("Conferir com atenção", relatorio.conferir),

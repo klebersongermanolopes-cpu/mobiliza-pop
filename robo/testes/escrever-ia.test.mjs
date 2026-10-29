@@ -51,3 +51,12 @@ test("Gemini: lê a resposta mesmo com bloco de código em volta", () => {
   assert.deepEqual(lerRespostaGemini(j), { a: 1 });
   assert.throws(() => lerRespostaGemini({ promptFeedback: { blockReason: "SAFETY" } }), /bloqueado/);
 });
+
+test("Placar: lê SIM e NÃO direto do texto da página do e-Cidadania", async () => {
+  const { lerPlacarDaPagina } = await import("../escrever-ia.mjs");
+  const r = lerPlacarDaPagina("Consulta pública Votos apurados até 28/10/2026, 17:54:42 SIM 10.660 NÃO 14.388 Opine");
+  assert.deepEqual(r, { sim: 10660, nao: 14388, apurado_em: "2026-10-28T17:54" });
+  const vazio = lerPlacarDaPagina("página sem placar");
+  assert.equal(vazio.sim, null);
+  assert.equal(placarCoerente({ sim: 1, nao: 1 }, vazio), false);
+});
