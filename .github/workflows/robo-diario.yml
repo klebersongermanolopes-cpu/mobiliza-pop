@@ -1,0 +1,64 @@
+# Robô diário: coleta dados públicos, a IA escreve os rascunhos e abre um pedido de revisão (pull request).
+# Nada é publicado sem uma pessoa aprovar o pull request.
+name: Robô diário
+
+on:
+  schedule:
+    - cron: "17 11 * * *" # 8h17 em Brasília
+    - cron: "17 20 * * *" # 17h17 em Brasília
+  workflow_dispatch: # botão "Run workflow" na aba Actions
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: robo-diario
+  cancel-in-progress: false
+
+jobs:
+  robo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Coletar dados públicos (Câmara, Senado, notícias)
+        run: node robo/coletar.mjs
+
+      - name: IA escreve os rascunhos
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Assinatura do Claude (token gerado com "claude setup-token").
+          # Para usar chave de API no lugar, troque a linha abaixo por:
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: "/boletim-diario"
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebFetch,Bash(node robo/validar.mjs)"
+
+      - name: Conferir o conteúdo
+        run: node robo/validar.mjs
+
+      - name: Preparar descrição do pedido de revisão
+        run: |
+          [ -f robo/pauta/relatorio.md ] || echo "O robô rodou, mas não deixou relatório. Confira as mudanças na aba Files changed." > robo/pauta/relatorio.md
+          echo "QUANDO=$(TZ=America/Sao_Paulo date '+%d/%m às %Hh%M')" >> "$GITHUB_ENV"
+
+      - name: Abrir pedido de revisão
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: robo/rascunhos
+          delete-branch: true
+          commit-message: "Rascunhos do robô (${{ env.QUANDO }})"
+          title: "Rascunhos do robô: ${{ env.QUANDO }}"
+          body-path: robo/pauta/relatorio.md
+          labels: revisar
+          add-paths: |
+            site/data/*.json

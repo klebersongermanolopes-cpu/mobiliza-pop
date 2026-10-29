@@ -1,0 +1,19 @@
+# Confere o conteúdo e roda os testes em todo pull request e em todo envio para a main.
+name: Validar
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test "robo/testes/*.test.mjs"
+      - run: node robo/validar.mjs

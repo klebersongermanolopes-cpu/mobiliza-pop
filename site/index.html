@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mobiliza Pop</title>
+<meta name="description" content="Notícias independentes, checagem e mobilização: acompanhe parlamentares e projetos de lei em alerta.">
+<meta name="theme-color" content="#588157">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mobiliza Pop">
+<meta property="og:description" content="A mentira corre. A gente corre mais. Alertas de projetos de lei, checagem e monitor do Congresso.">
+<meta property="og:image" content="assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sai" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></symbol>
+</svg>
+
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" href="#inicio" aria-label="Mobiliza Pop, página inicial">
+      <span class="selo selo-mini" aria-hidden="true"><span class="marca-img"></span></span>
+      <b>Mobiliza<span>Pop</span></b>
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="#inicio" data-r="inicio">Início</a>
+      <a href="#alertas" data-r="alertas" class="destaque">Alertas</a>
+      <a href="#monitor" data-r="monitor">Monitor</a>
+      <a href="#checagem" data-r="checagem">Checagem</a>
+      <a href="#boletim" data-r="boletim">Boletim</a>
+      <a href="#sobre" data-r="sobre">Sobre</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+<!-- ================= INÍCIO ================= -->
+<section class="view" id="v-inicio" aria-label="Início">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow"><span class="tag">Notícias independentes</span><span class="tag verm">Checagem</span><span class="tag">Mobilização</span></div>
+        <h1>
+          <span class="ln"><span>A mentira</span></span>
+          <span class="ln"><span class="hl">corre.</span></span>
+          <span class="ln"><span>A gente</span></span>
+          <span class="ln"><span class="hl2">corre mais.</span></span>
+        </h1>
+        <p class="lead">Acompanhamos o Congresso, explicamos os projetos de lei que ameaçam direitos e mostramos a quem cobrar.</p>
+        <div class="acoes">
+          <a class="btn verm" href="#alertas">Ver alertas</a>
+          <a class="btn claro" href="#monitor">Cobrar parlamentares</a>
+        </div>
+      </div>
+      <div class="selo-palco">
+        <svg class="selo-anel" viewBox="0 0 400 400" aria-hidden="true">
+          <defs><path id="anel" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs>
+          <circle cx="200" cy="200" r="198" class="anel-fundo"/>
+          <text><textPath href="#anel" textLength="1090" lengthAdjust="spacing">NOTÍCIA INDEPENDENTE / CHECAGEM / MOBILIZAÇÃO POPULAR /</textPath></text>
+        </svg>
+        <div class="selo selo-grande" role="img" aria-label="Logo Mobilização Popular"><span class="marca-img"></span></div>
+        <span class="carimbo">Informação é mobilização</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker" aria-hidden="true"><div class="faixa" id="ticker"></div></div>
+
+  <section class="manifesto" aria-label="Manifesto">
+    <div class="wrap">
+      <p class="mono">Manifesto</p>
+      <p class="grande" id="manifesto-txt">Nossa luta é contra a <em>desinformação</em>. Mal acaba uma eleição e a mentira já está nos grupos. A gente traduz o que acontece no Congresso em linguagem simples, mostra quem votou em quê e coloca na sua mão o caminho para <em>cobrar</em>.</p>
+      <p class="assina">Mobiliza Pop / Mobilização Popular</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="wrap">
+      <div class="secao-cab">
+        <h2>Quatro<br>frentes</h2>
+        <p>Tudo gratuito, aberto e feito para caber no celular de quem está na correria.</p>
+      </div>
+      <div class="frentes">
+        <a class="frente f1" href="#monitor"><span class="tag">Dados oficiais</span><h3>Monitor</h3><p>Deputados e senadores: partido, estado, contato oficial e como votaram nos projetos em alerta.</p><span class="ir">Abrir o monitor</span></a>
+        <a class="frente f2" href="#alertas"><span class="tag">Urgente</span><h3>Alertas</h3><p>Projetos que ameaçam direitos, explicados sem juridiquês e com o que fazer agora.</p><span class="ir">Ver os alertas</span></a>
+        <a class="frente f3" href="#checagem"><span class="tag">Contra fake news</span><h3>Checagem</h3><p>O que está circulando nos grupos, com fonte oficial e veredito.</p><span class="ir">Ver as checagens</span></a>
+        <a class="frente f4" href="#boletim"><span class="tag">Todo dia</span><h3>Boletim</h3><p>O resumo do dia pronto para mandar no WhatsApp.</p><span class="ir">Ler o boletim</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="passos" aria-label="Como cobrar em três passos">
+    <div class="passos-pin">
+      <div class="passos-trilho">
+        <div class="passo intro"><p class="mono" style="color:var(--broto)">Continue rolando</p><h2>Cobrar dá resultado em 3 passos</h2></div>
+        <article class="passo"><span class="n">1</span><h3>Entenda o projeto</h3><p>Cada alerta tem um resumo curto: o que é, o que muda na sua vida e em que fase está.</p><a class="btn peq" href="#alertas">Ler os alertas</a></article>
+        <article class="passo"><span class="n">2</span><h3>Vote na consulta</h3><p>O Senado e a Câmara abrem consultas públicas. O placar pesa na conversa entre os parlamentares.</p><a class="btn peq broto" href="https://www12.senado.leg.br/ecidadania" target="_blank" rel="noopener">Abrir o e-Cidadania <svg class="ico"><use href="#i-sai"/></svg></a></article>
+        <article class="passo"><span class="n">3</span><h3>Fale com quem decide</h3><p>No monitor você copia o e-mail oficial e uma mensagem pronta. Leva um minuto.</p><a class="btn peq claro" href="#monitor">Achar meu parlamentar</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="agenda-titulo">
+    <div class="wrap">
+      <div class="secao-cab">
+        <h2 id="agenda-titulo">Agenda</h2>
+        <p>Datas que importam. A equipe atualiza toda semana.</p>
+      </div>
+      <div class="agenda" id="agenda"></div>
+    </div>
+  </section>
+</section>
+
+<!-- ================= ALERTAS (lista) ================= -->
+<section class="view" id="v-alertas" aria-label="Alertas" hidden>
+  <div class="pag-topo">
+    <div class="wrap">
+      <h1>Projetos em alerta</h1>
+      <p>Projetos de lei que ameaçam direitos, explicados em linguagem simples. Cada um traz o que fazer agora.</p>
+    </div>
+  </div>
+  <div class="wrap"><div class="lista-alertas" id="lista-alertas"></div></div>
+</section>
+
+<!-- ================= ALERTA (detalhe) ================= -->
+<section class="view" id="v-alerta" aria-label="Alerta" hidden></section>
+
+<!-- ================= MONITOR ================= -->
+<section class="view" id="v-monitor" aria-label="Monitor do Congresso" hidden>
+  <div class="pag-topo">
+    <div class="wrap">
+      <h1>Monitor do Congresso</h1>
+      <p>Ache quem representa o seu estado, copie o contato oficial e mande uma mensagem pronta cobrando posição.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="abas" role="tablist" aria-label="Casa legislativa">
+      <button type="button" role="tab" id="aba-camara" aria-selected="true" data-casa="camara">Câmara</button>
+      <button type="button" role="tab" id="aba-senado" aria-selected="false" data-casa="senado">Senado</button>
+    </div>
+    <div class="aviso-faixa" id="status-monitor" hidden></div>
+    <div class="filtros">
+      <div class="campo"><label for="busca">Buscar por nome</label><input id="busca" type="search" placeholder="Ex.: Erika" autocomplete="off"></div>
+      <div class="campo"><label for="uf">Estado</label><select id="uf"><option value="">Todos</option></select></div>
+      <div class="campo"><label for="partido">Partido</label><select id="partido"><option value="">Todos</option></select></div>
+      <div class="campo pl"><label for="pl-cobranca">Cobrar sobre</label><select id="pl-cobranca"></select></div>
+      <div class="contagem" id="contagem" aria-live="polite">0<small>parlamentares</small></div>
+    </div>
+    <div class="grade-parl" id="grade"></div>
+  </div>
+</section>
+
+<!-- ================= CHECAGEM ================= -->
+<section class="view" id="v-checagem" aria-label="Checagem" hidden>
+  <div class="pag-topo">
+    <div class="wrap">
+      <h1>Checagem</h1>
+      <div>
+        <p><b>Confira antes de compartilhar.</b> Toda checagem mostra a frase que está circulando, o que é verdade e a fonte oficial. Sem fonte, não publicamos.</p>
+        <div class="legenda"><span class="veredito falso">Falso</span><span class="veredito enganoso">Enganoso</span><span class="veredito verdadeiro">Verdadeiro</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap"><div class="checks" id="checks"></div></div>
+</section>
+
+<!-- ================= BOLETIM ================= -->
+<section class="view" id="v-boletim" aria-label="Boletim" hidden>
+  <div class="pag-topo">
+    <div class="wrap">
+      <h1>Boletim do dia</h1>
+      <p>O resumo do que importa, revisado pela equipe e pronto para colar no WhatsApp.</p>
+    </div>
+  </div>
+  <div class="wrap"><div class="boletim" id="boletim"></div></div>
+</section>
+
+<!-- ================= SOBRE ================= -->
+<section class="view" id="v-sobre" aria-label="Sobre" hidden>
+  <div class="pag-topo">
+    <div class="wrap">
+      <h1>Quem somos</h1>
+      <p>Mobiliza Pop é uma iniciativa independente de comunicação e mobilização popular.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="texto-longo">
+      <p>Nosso trabalho é transformar o que acontece no Congresso em informação simples e em ação: votar em consultas públicas, cobrar parlamentares e não deixar a mentira circular sem resposta.</p>
+      <h2>De onde vêm os dados</h2>
+      <ul>
+        <li>Parlamentares, projetos e votações: APIs de dados abertos da Câmara dos Deputados e do Senado Federal.</li>
+        <li>Consultas públicas: e-Cidadania, do Senado.</li>
+        <li>Notícias: veículos jornalísticos, sempre com link para a matéria original.</li>
+      </ul>
+      <h2>Como usamos inteligência artificial</h2>
+      <p>Usamos IA para coletar dados públicos e escrever rascunhos de resumos. Nada é publicado sem a revisão de uma pessoa da equipe. Os conteúdos que passaram por esse processo levam a marca "Rascunho feito com IA, revisado pela equipe".</p>
+      <h2>Privacidade</h2>
+      <p>Este site não usa cookies de rastreamento e não pede seus dados para funcionar. Se encontrar um erro ou quiser pedir correção ou retirada de alguma informação (LGPD, art. 18), fale com a gente pelos canais abaixo.</p>
+      <h2>Regras da casa</h2>
+      <ul>
+        <li>Sem fonte, não publicamos.</li>
+        <li>Separamos sempre "investigado", "denunciado" e "condenado".</li>
+        <li>Errou, corrige: toda correção fica registrada na própria página.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <div>
+      <h2>Receba o boletim</h2>
+      <p style="color:var(--papel-2);max-width:44ch;margin-top:12px">Um resumo por dia com os alertas, as checagens e o que fazer. Direto no seu WhatsApp.</p>
+      <div style="margin-top:24px" id="cta-canal"></div>
+    </div>
+    <div class="col">
+      <p class="mono" style="color:var(--sol)">Mobiliza Pop</p>
+      <p style="margin-top:10px">Dados das APIs oficiais da Câmara dos Deputados e do Senado Federal.</p>
+      <div class="links" id="links-rodape"></div>
+    </div>
+    <div class="base"><span>Mobiliza Pop / Mobilização Popular</span><a href="#sobre">Privacidade e uso de IA</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/js/app.js" charset="utf-8"></script>
+</body>
+</html>

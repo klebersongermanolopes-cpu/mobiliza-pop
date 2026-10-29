@@ -1,0 +1,5 @@
+node_modules/
+robo/pauta/*.json
+robo/pauta/*.md
+.DS_Store
+.env
