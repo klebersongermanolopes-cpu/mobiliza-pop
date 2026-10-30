@@ -90,6 +90,24 @@ Em **Settings > Actions > General > Workflow permissions**:
 ### Testar
 **Actions > Robô diário > Run workflow**. Em até 10 minutos aparece o pull request "Rascunhos do robô".
 
+## 3.1 Painel de administração (criar, editar e apagar publicações)
+
+Endereço: `https://SEU-USUARIO.github.io/mobiliza-pop/admin/`
+
+**Primeiro acesso (uma vez por computador):**
+1. No GitHub, crie uma chave: foto do perfil > **Settings > Developer settings > Personal access tokens > Fine-grained tokens > Generate new token**.
+   - Repository access: **Only select repositories** > `mobiliza-pop`
+   - Permissions > Repository: **Contents: Read and write** (e **Pull requests: Read and write**, se quiser)
+   - Expiration: até 1 ano.
+2. Copie a chave. **Ela é uma senha.**
+3. Abra o painel, clique em **Sign In with Token** e cole.
+
+No painel você vê Checagens, Alertas, Boletim, Agenda e Configurações. Cada **Save** publica em cerca de 2 minutos, depois de passar pelo validador. Se o validador reprovar, o site continua como estava e o erro aparece na aba **Actions**.
+
+Para dar acesso a outra pessoa: **Settings > Collaborators > Add people** no repositório; ela cria a própria chave.
+
+Dica: aprove o pull request do robô antes de editar pelo painel o mesmo tipo de conteúdo. Se der conflito, feche o pull request: a próxima rodada do robô cria outro já atualizado.
+
 ## 4. Rotina da equipe
 
 1. Duas vezes por dia chega um pull request "Rascunhos do robô". O texto do pull request é o relatório da IA: o que mudou, o que conferir e sugestões de novos alertas.

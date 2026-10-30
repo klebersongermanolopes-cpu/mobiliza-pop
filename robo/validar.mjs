@@ -37,7 +37,7 @@ function regras(erros, arquivo) {
     if (!/^https:\/\/[^\s]+$/.test(v)) e(`${onde} precisa ser um link https válido: ${v}`);
   };
   const data = (v, onde, opcional = false) => {
-    if (v == null) { if (!opcional) e(`${onde} sem data`); return; }
+    if (v == null || v === "") { if (!opcional) e(`${onde} sem data`); return; }
     if (!DATA.test(v)) e(`${onde} deve estar no formato AAAA-MM-DD: ${v}`);
   };
   return { e, texto, link, data };
@@ -100,7 +100,7 @@ const validadores = {
     j.eventos.forEach((ev, i) => {
       const o = `evento ${i + 1}`;
       data(ev.data, `${o}.data`, true);
-      if (ev.data == null) texto(ev.rotulo_data, `${o}.rotulo_data (obrigatório quando não há data)`, 14);
+      if (ev.data == null || ev.data === "") texto(ev.rotulo_data, `${o}.rotulo_data (obrigatório quando não há data)`, 14);
       texto(ev.titulo, `${o}.titulo`, 90);
       texto(ev.descricao, `${o}.descricao`, 200);
       texto(ev.tag, `${o}.tag`, 16);
