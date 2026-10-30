@@ -1,0 +1,45 @@
+# Publica a pasta site/ no GitHub Pages sempre que algo entra na main (por exemplo, quando você aprova os rascunhos do robô).
+# Antes de publicar, roda o validador: conteúdo com erro não vai para o ar.
+# Endereço: https://SEU-USUARIO.github.io/mobiliza-pop/
+name: Publicar site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # botão "Run workflow" na aba Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Conferir o conteúdo
+        run: node robo/validar.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar
+        id: publicacao
+        uses: actions/deploy-pages@v4
