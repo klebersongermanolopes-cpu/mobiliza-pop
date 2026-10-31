@@ -9,8 +9,11 @@
       "autoria": "Sen. Marcos Rogério",
       "situacao": "Consulta pública aberta",
       "prioridade": "alta",
-      "temas": ["armas", "meio ambiente"],
-      "atualizado_em": "2026-10-28",
+      "temas": [
+        "armas",
+        "meio ambiente"
+      ],
+      "atualizado_em": "2026-10-31",
       "gerado_por_ia": false,
       "camara_id": null,
       "resumo": "Cria regras nacionais para colecionadores, atiradores e caçadores (CACs), incluindo a caça.",
@@ -50,9 +53,9 @@
       ],
       "consulta": {
         "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
-        "sim": 10660,
-        "nao": 14388,
-        "apurado_em": "2026-10-28T17:54:00-03:00",
+        "sim": 13972,
+        "nao": 62906,
+        "apurado_em": "2026-10-31T08:50:00-03:00",
         "fonte": "e-Cidadania, Senado Federal"
       },
       "acao": {
@@ -62,7 +65,10 @@
       "mensagem_whatsapp": "🚨 PL 3615/2019 no Senado: cria o Estatuto dos CACs e pode liberar a caça no país todo.\n\nA consulta pública está aberta. O NÃO está na frente, mas por pouco.\n\nVote em 1 minuto: https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353\n\nVia Mobiliza Pop",
       "mensagem_cobranca": "Sou eleitor(a) e acompanho o PL 3615/2019 (Estatuto dos CACs), que pode liberar a caça em todo o país. Quero saber qual é a sua posição sobre esse projeto e como pretende votar.",
       "fontes": [
-        { "nome": "e-Cidadania: PL 3615/2019", "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353" }
+        {
+          "nome": "e-Cidadania: PL 3615/2019",
+          "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353"
+        }
       ]
     }
   ]

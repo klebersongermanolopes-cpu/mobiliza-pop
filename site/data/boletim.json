@@ -1,32 +1,39 @@
 {
-  "atualizado_em": "2026-10-28",
+  "atualizado_em": "2026-10-31",
   "edicoes": [
     {
-      "id": "2026-10-28-exemplo",
-      "data": "2026-10-28",
-      "hora": "18h",
-      "exemplo": true,
-      "gerado_por_ia": false,
-      "manchete": "Consulta do PL da caça segue aberta e o não lidera por pouco",
+      "id": "2026-10-31-manha",
+      "data": "2026-10-31",
+      "hora": "8h",
+      "exemplo": false,
+      "gerado_por_ia": true,
+      "manchete": "Consulta pública sobre o estatuto de armas e agenda dos próximos dias",
       "itens": [
         {
           "tipo": "alerta",
-          "titulo": "PL 3615/2019: vote na consulta",
-          "texto": "O não tem 14.388 votos contra 10.660 do sim (Senado, 28/10, 17h54). A diferença é pequena.",
+          "titulo": "Consulta pública do Estatuto de Colecionadores e Atiradores",
+          "texto": "O Senado mantém aberta a consulta pública sobre o PL 3615/2019. Participe e deixe sua opinião no site oficial.",
           "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
-          "fonte": "e-Cidadania"
-        },
-        {
-          "tipo": "agenda",
-          "titulo": "Posse do novo Congresso em 1º de fevereiro",
-          "texto": "Quem foi eleito em 2026 assume o mandato. É hora de saber quem representa o seu estado.",
-          "url": null,
-          "fonte": null
+          "fonte": "Senado Federal"
         },
         {
           "tipo": "noticia",
-          "titulo": "Espaço para uma notícia do dia",
-          "texto": "Quando o robô estiver ligado, aqui entram as notícias coletadas e revisadas pela equipe, sempre com link para a fonte.",
+          "titulo": "Apelo da APIB por demarcação de terras indígenas em 2026",
+          "texto": "A Articulação dos Povos Indígenas do Brasil pediu ao governo medidas urgentes contra a violência e avanço na demarcação de 73 Terras Indígenas ainda este ano.",
+          "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQaDM2MXE4YjlmQWxwYTFOd0RZQU1keVFVMHpVeC14cWd0TjhtLWhOT3NsNDkwM3FxbldoZ1dsc01nX1dXVXMtMV9yeWg3R1BfeEE1SVJwbThES0c1OG9DcHhhaFNLOENaTzZlRExxZlVxSkZIWGo0Smc2ZVhOckVCQ2w2NDFyTUFaZ0RPYnh3cWh0dnROaVdKYUpRckk0QkYxaXJGYkFpclZCSEo2UWV5ZDl4SzlxNkVackFwMWpXUHA1VEV0d1YtTFF2ai13UXVoejFnRDJqQTRYeUtrdFlNQWhB?oc=5",
+          "fonte": "APIB"
+        },
+        {
+          "tipo": "noticia",
+          "titulo": "Debate sobre anistia e articulações políticas no Senado",
+          "texto": "Senadores condicionam o debate de anistia a uma decisão do STF. O tema gera divergências entre parlamentares e membros do governo.",
+          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOQWtLa3FRMTRKbm5KbDFVMWNuMmlZTENJaUc0LXk4TEZ3N3dwUkpoZk9ETmtWRkpoTUJnN3Y3M2dxUFpmTWdCdW13NEFkUmVaSWhpRERvMW1zdjl0MFZfUXNBSlU1TnhpYjloTVQ5MzFucFQzZU9IYjFob1dkeEp5TklIVmhnQVJ3aUp3b0ZfQ01lU1pmcFE?oc=5",
+          "fonte": "Vero Notícias"
+        },
+        {
+          "tipo": "agenda",
+          "titulo": "Posse do novo Congresso em fevereiro",
+          "texto": "Anote na sua agenda: a posse dos novos parlamentares está marcada para o dia 1 de fevereiro de 2027.",
           "url": null,
           "fonte": null
         }
