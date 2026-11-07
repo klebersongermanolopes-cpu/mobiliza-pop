@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-29",
+  "atualizado_em": "2026-11-07",
   "fonte": "API Dados Abertos da Câmara dos Deputados",
   "amostra": false,
   "parlamentares": [
@@ -2632,15 +2632,6 @@
       "url": "https://www.camara.leg.br/deputados/80815"
     },
     {
-      "id": "122195",
-      "nome": "Leonardo Gadelha",
-      "partido": "PODE",
-      "uf": "PB",
-      "email": "dep.leonardogadelha@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/122195.jpg",
-      "url": "https://www.camara.leg.br/deputados/122195"
-    },
-    {
       "id": "74156",
       "nome": "Leonardo Monteiro",
       "partido": "PT",
@@ -4034,6 +4025,15 @@
       "email": "dep.rogeriocorreia@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/204480.jpg",
       "url": "https://www.camara.leg.br/deputados/204480"
+    },
+    {
+      "id": "160629",
+      "nome": "Romero Rodrigues",
+      "partido": "PODE",
+      "uf": "PB",
+      "email": "dep.romerorodrigues@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/160629.jpg",
+      "url": "https://www.camara.leg.br/deputados/160629"
     },
     {
       "id": "204525",

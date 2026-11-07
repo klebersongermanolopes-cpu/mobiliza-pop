@@ -1,34 +1,41 @@
 {
-  "atualizado_em": "2026-10-28",
+  "atualizado_em": "2026-11-07",
   "edicoes": [
     {
-      "id": "2026-10-28-exemplo",
-      "data": "2026-10-28",
-      "hora": "18h",
-      "exemplo": true,
-      "gerado_por_ia": false,
-      "manchete": "Consulta do PL da caça segue aberta e o não lidera por pouco",
+      "id": "2026-11-07-manha",
+      "data": "2026-11-07",
+      "hora": "8h",
+      "exemplo": false,
+      "gerado_por_ia": true,
+      "manchete": "Governo aprova plano para conter desmatamento e STF entra na mira sobre nova jornada.",
       "itens": [
         {
-          "tipo": "alerta",
-          "titulo": "PL 3615/2019: vote na consulta",
-          "texto": "O não tem 14.388 votos contra 10.660 do sim (Senado, 28/10, 17h54). A diferença é pequena.",
-          "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
-          "fonte": "e-Cidadania"
-        },
-        {
-          "tipo": "agenda",
-          "titulo": "Posse do novo Congresso em 1º de fevereiro",
-          "texto": "Quem foi eleito em 2026 assume o mandato. É hora de saber quem representa o seu estado.",
-          "url": null,
-          "fonte": null
+          "tipo": "noticia",
+          "titulo": "Brasil aprova plano para conter desmatamento até 2030",
+          "texto": "O governo federal aprovou o mapa do caminho para interromper e reverter o desmatamento até o final da década, definindo novas regras.",
+          "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPejc0ZkdJcV8tdWFhUVBvdDZIZ21yb21yUjc0bWUwczVJalo4NGw2YmRrYWI1N2VsaW1Sc0hhVGpfYldYNXBNMnZOV3hMZm1UUXlHanpfOXYyc2J0R3pEblcyUlV1MGZOZl9JMkp1dTM5bDkwT01LTDR6Vjhuelh1bGlUaWs1SldrbGlvbDhveHhsWEZRdEVtcWE4aTA1bHRFS0hvcTBZNkpPRGhleHI0ZWdtSnBPOC1kX2p2c1luU0U1Zw?oc=5",
+          "fonte": "O Presente Rural"
         },
         {
           "tipo": "noticia",
-          "titulo": "Espaço para uma notícia do dia",
-          "texto": "Quando o robô estiver ligado, aqui entram as notícias coletadas e revisadas pela equipe, sempre com link para a fonte.",
-          "url": null,
-          "fonte": null
+          "titulo": "Indústria vai ao STF contra regras do fim da escala 6x1",
+          "texto": "A CNI entrou com ação no Supremo Tribunal Federal para contestar as novas regras da jornada de trabalho e quer limitar a Justiça do Trabalho.",
+          "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPWDlhc1JBN2UxQVUyd1VFT2hlVzVVR2lQY3VURnpVdUFSckhJRTF0WUFtcWl6dTVQa2I3cFp3dklSYUUzaEpWOHFFdG5NaDZ4SmgzWms4U3ZOYzlyXzdTQlNBQVUtbnFuZTJNRklKNlZMVWxMN05nRXc5NWR0NkRkMDdXMTRka3A3LVhsTFA1b0RKZVQzVUpXd1B5dDJWWmhOdWdJa0JEcHk4a2hPcjJkNkhn?oc=5",
+          "fonte": "Congresso em Foco"
+        },
+        {
+          "tipo": "noticia",
+          "titulo": "Funai delimita novas Terras Indígenas no Amazonas e Roraima",
+          "texto": "O governo federal aprovou a identificação e delimitação de mais duas áreas para garantir a proteção dos povos originários.",
+          "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxOVVlzMFJpOVByOXFCM1dwekxReHQwQ1BYaTFMQkxFaUc2YnJ0SFp0Y29uSWY2UW5fdEZTTklPX1dhd0dENzU1RnJTMzUyZjM5c0drc3lJdGw3MWRiQlpmX3ZBYkpNMTRsYmZVVEJQVGlXQXpFYkgwdWVlZzU2X2dwWUNPZmJXeHAxY2tBTDRzb25hdFU0ZEFIY1Z0WnFrQWhCOUIwMUo2NDRWUTJIa1dvZFplZkNUVno3bjE3UGpTcjFfaWNiMy02bnpIMTk2cW5tdk5xcEdoVVVLNVAxaUxpLThwd0Z4N0tmWFU0cUNLRUZqcW1xZDFvZGZuaHhyaW9aTWc?oc=5",
+          "fonte": "Governo Federal"
+        },
+        {
+          "tipo": "agenda",
+          "titulo": "Consulta pública do PL 3615/2019",
+          "texto": "Está aberta a participação popular sobre o Estatuto dos Colecionadores, Atiradores e Caçadores.",
+          "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
+          "fonte": "Senado Federal"
         }
       ]
     }
