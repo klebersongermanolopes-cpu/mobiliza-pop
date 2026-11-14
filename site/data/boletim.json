@@ -1,34 +1,41 @@
 {
-  "atualizado_em": "2026-10-28",
+  "atualizado_em": "2026-11-14",
   "edicoes": [
     {
-      "id": "2026-10-28-exemplo",
-      "data": "2026-10-28",
-      "hora": "18h",
-      "exemplo": true,
-      "gerado_por_ia": false,
-      "manchete": "Consulta do PL da caça segue aberta e o não lidera por pouco",
+      "id": "2026-11-14-manha",
+      "data": "2026-11-14",
+      "hora": "8h",
+      "exemplo": false,
+      "gerado_por_ia": true,
+      "manchete": "Supremo avalia regras do fim da escala 6x1 enquanto governo debate desmatamento na COP31",
       "itens": [
         {
           "tipo": "alerta",
-          "titulo": "PL 3615/2019: vote na consulta",
-          "texto": "O não tem 14.388 votos contra 10.660 do sim (Senado, 28/10, 17h54). A diferença é pequena.",
+          "titulo": "Consulta pública sobre Estatuto dos CACs",
+          "texto": "Está aberta a consulta pública sobre o PL 3615/2019, que trata do Estatuto dos Colecionadores, Atiradores e Caçadores.",
           "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
-          "fonte": "e-Cidadania"
-        },
-        {
-          "tipo": "agenda",
-          "titulo": "Posse do novo Congresso em 1º de fevereiro",
-          "texto": "Quem foi eleito em 2026 assume o mandato. É hora de saber quem representa o seu estado.",
-          "url": null,
-          "fonte": null
+          "fonte": "Senado Federal"
         },
         {
           "tipo": "noticia",
-          "titulo": "Espaço para uma notícia do dia",
-          "texto": "Quando o robô estiver ligado, aqui entram as notícias coletadas e revisadas pela equipe, sempre com link para a fonte.",
-          "url": null,
-          "fonte": null
+          "titulo": "STF julga implantação do fim da escala 6x1",
+          "texto": "O plenário virtual do STF analisa a votação para a mudança na jornada de trabalho a partir de dezembro, baseada na emenda constitucional 141.",
+          "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9wVGwxT0VHSTVjLXJwdFhheWtFMG9aeUZ1YjFQZ2czaVlCY0cxdkx4U05wdDBtc2lSeE5GZU1fZFVEbnJZQmVsRGhvX1dzSjFVdVE?oc=5",
+          "fonte": "Instagram"
+        },
+        {
+          "tipo": "noticia",
+          "titulo": "Brasil leva ações contra desmatamento à COP31",
+          "texto": "O governo federal apresentou estratégias internacionais para zerar o desmatamento até 2030 durante o evento oficial.",
+          "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNMzdqNURMLW5QanRvckRaQWs0Zm55MTNiU3Y5a0E5OTVUMS1PRkVPLXNPWVY5Vmd0eGZOVTNVcHN1YUZZM0ZJYUpNeGQzakdVUnp0NVNPQWVkTUdPZHNWVl9Dd3BDOTNIeVluSGF1VHAwWGtsNndPdmd3eHZORmk3cjljdlE1OXpLbEVkTlQ0c2lZVEdoeDctekprWUtfNlNHLXluZmktVlNTWmQ4Y2huS3NfRTFuUGxnelE?oc=5",
+          "fonte": "Governo Federal"
+        },
+        {
+          "tipo": "agenda",
+          "titulo": "Consulta pública do PL 3615/2019",
+          "texto": "A votação online sobre o Estatuto dos CACs segue com participação aberta para você manifestar sua opinião.",
+          "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
+          "fonte": "Senado Federal"
         }
       ]
     }
