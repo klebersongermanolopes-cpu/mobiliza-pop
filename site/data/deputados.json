@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-29",
+  "atualizado_em": "2026-11-21",
   "fonte": "API Dados Abertos da Câmara dos Deputados",
   "amostra": false,
   "parlamentares": [
@@ -164,6 +164,15 @@
       "email": "dep.alexmanente@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/178972.jpg",
       "url": "https://www.camara.leg.br/deputados/178972"
+    },
+    {
+      "id": "204571",
+      "nome": "Alex Santana",
+      "partido": "REPUBLICANOS",
+      "uf": "BA",
+      "email": "dep.alexsantana@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/204571.jpg",
+      "url": "https://www.camara.leg.br/deputados/204571"
     },
     {
       "id": "220542",
@@ -1912,6 +1921,15 @@
       "url": "https://www.camara.leg.br/deputados/204394"
     },
     {
+      "id": "74383",
+      "nome": "Giacobo",
+      "partido": "PSD",
+      "uf": "PR",
+      "email": "dep.giacobo@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/74383.jpg",
+      "url": "https://www.camara.leg.br/deputados/74383"
+    },
+    {
       "id": "204491",
       "nome": "Gilberto Abramo",
       "partido": "REPUBLICANOS",
@@ -2189,15 +2207,6 @@
       "email": "dep.isnaldobulhoesjr@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/204436.jpg",
       "url": "https://www.camara.leg.br/deputados/204436"
-    },
-    {
-      "id": "225846",
-      "nome": "Itamar Paim",
-      "partido": "PL",
-      "uf": "PR",
-      "email": "dep.itamarpaim@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/225846.jpg",
-      "url": "https://www.camara.leg.br/deputados/225846"
     },
     {
       "id": "220696",
@@ -2632,15 +2641,6 @@
       "url": "https://www.camara.leg.br/deputados/80815"
     },
     {
-      "id": "122195",
-      "nome": "Leonardo Gadelha",
-      "partido": "PODE",
-      "uf": "PB",
-      "email": "dep.leonardogadelha@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/122195.jpg",
-      "url": "https://www.camara.leg.br/deputados/122195"
-    },
-    {
       "id": "74156",
       "nome": "Leonardo Monteiro",
       "partido": "PT",
@@ -2927,15 +2927,6 @@
       "email": "dep.marcelomoraes@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/133810.jpg",
       "url": "https://www.camara.leg.br/deputados/133810"
-    },
-    {
-      "id": "204558",
-      "nome": "Marcelo Nilo",
-      "partido": "REPUBLICANOS",
-      "uf": "BA",
-      "email": "dep.marcelonilo@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/204558.jpg",
-      "url": "https://www.camara.leg.br/deputados/204558"
     },
     {
       "id": "160161",
@@ -4034,6 +4025,15 @@
       "email": "dep.rogeriocorreia@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/204480.jpg",
       "url": "https://www.camara.leg.br/deputados/204480"
+    },
+    {
+      "id": "160629",
+      "nome": "Romero Rodrigues",
+      "partido": "PODE",
+      "uf": "PB",
+      "email": "dep.romerorodrigues@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/160629.jpg",
+      "url": "https://www.camara.leg.br/deputados/160629"
     },
     {
       "id": "204525",
