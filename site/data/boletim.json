@@ -1,34 +1,48 @@
 {
-  "atualizado_em": "2026-10-28",
+  "atualizado_em": "2026-11-28",
   "edicoes": [
     {
-      "id": "2026-10-28-exemplo",
-      "data": "2026-10-28",
-      "hora": "18h",
-      "exemplo": true,
-      "gerado_por_ia": false,
-      "manchete": "Consulta do PL da caça segue aberta e o não lidera por pouco",
+      "id": "2026-11-28-manha",
+      "data": "2026-11-28",
+      "hora": "9h",
+      "exemplo": false,
+      "gerado_por_ia": true,
+      "manchete": "Fique de olho nas consultas públicas e nos debates que mexem com seus direitos e na sua rotina",
       "itens": [
         {
           "tipo": "alerta",
-          "titulo": "PL 3615/2019: vote na consulta",
-          "texto": "O não tem 14.388 votos contra 10.660 do sim (Senado, 28/10, 17h54). A diferença é pequena.",
+          "titulo": "Consulta pública aberta sobre estatuto de colecionadores e atiradores",
+          "texto": "O projeto que trata do Estatuto dos Colecionadores, Atiradores e Caçadores está com consulta pública aberta no Senado para a sua participação.",
           "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
-          "fonte": "e-Cidadania"
-        },
-        {
-          "tipo": "agenda",
-          "titulo": "Posse do novo Congresso em 1º de fevereiro",
-          "texto": "Quem foi eleito em 2026 assume o mandato. É hora de saber quem representa o seu estado.",
-          "url": null,
-          "fonte": null
+          "fonte": "Senado Federal"
         },
         {
           "tipo": "noticia",
-          "titulo": "Espaço para uma notícia do dia",
-          "texto": "Quando o robô estiver ligado, aqui entram as notícias coletadas e revisadas pela equipe, sempre com link para a fonte.",
-          "url": null,
-          "fonte": null
+          "titulo": "STF mantém restrições ao porte de armas para guardas municipais",
+          "texto": "O Supremo Tribunal Federal decidiu manter as regras e restrições para a concessão de porte de arma de fogo por integrantes das guardas municipais.",
+          "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPOWFaVmxVUF9KOVB3UTZYcmdIeFk5YzZqeWU0N3RnMDM5c2RPQjdXNUhHOTlXdWI5aWxvd1N3bkVCUExzbFgzVEZMeGRIVUZ1VHVxcFZHUVRkbWI2aHVteHlUZ3huMU9jQngtSkNkVEt3SzBHd1NhaEh4LTRySmNiOGFVbFNyR2dqSDlzQlJIbGhfbENmZUE1V2RDeFNyeUw2NWprWWl5cmdFdVhVeEstZGVGQWJWYi12eXc?oc=5",
+          "fonte": "CartaCapital"
+        },
+        {
+          "tipo": "noticia",
+          "titulo": "AGU se manifesta em debate sobre a escala 6x1",
+          "texto": "A Advocacia-Geral da União se manifestou em meio às discussões sobre os reflexos e os caminhos jurídicos em torno do fim da escala 6x1.",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNd1JkYXNFeWtCeGE5bm1Cc2lnTDNJSHNpQnhKUXhQTHB3c1kxX3FVZ2NZVXV4aEhDWnZGTEF6U1dyVlVRd0l6ZWd6WnNjdk1LLWI1bjNpRW5CMnNWUjBkbTFZcE9oUEtwczZoWjYwMlZLUk1yQVNmc3FOeHFkZkhmQU5MZjJJVVRzSXBCRnU3MWFyRnVuOWxMM0FRczk?oc=5",
+          "fonte": "Estadão"
+        },
+        {
+          "tipo": "noticia",
+          "titulo": "Itamaraty rebate desinformação sobre carne brasileira",
+          "texto": "O Ministério das Relações Exteriores apontou a propagação de desinformação após declarações do presidente da França sobre a carne do Brasil.",
+          "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNWEdfc3JHb1lDMlRneXpyZkNKUHYwUGI1eHNRTE1FVmtnUmFuRzdVS2lBOUUxUWdqay1Cd21tYVVwY1BDcmRuTllpVkdPeXVTamdtRE5SUzkwSnB1VnM5X09RYkVRMVY0YmJNeEZqbk5IazZPcmdzendvMDAzaXBWcTNJWDh4ZmJRcEduS3FHVFRocWJUVXFrM01CaHlKN21jYUtibUR2WEF0c19fYXM0MlBjYTN5eDFiNlg3aTh2RmFIN2JtSkE0UzdZRFJNcm13TWR5R1FSZGdDTmpibjhTVXBBWHY?oc=5",
+          "fonte": "Brasil de Fato"
+        },
+        {
+          "tipo": "agenda",
+          "titulo": "Consulta pública do PL 3615/2019",
+          "texto": "Participe da consulta pública aberta sobre o projeto no site do Senado.",
+          "url": "https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137353",
+          "fonte": "Senado Federal"
         }
       ]
     }
