@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-29",
+  "atualizado_em": "2026-11-28",
   "fonte": "API Dados Abertos da Câmara dos Deputados",
   "amostra": false,
   "parlamentares": [
@@ -164,6 +164,15 @@
       "email": "dep.alexmanente@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/178972.jpg",
       "url": "https://www.camara.leg.br/deputados/178972"
+    },
+    {
+      "id": "204571",
+      "nome": "Alex Santana",
+      "partido": "REPUBLICANOS",
+      "uf": "BA",
+      "email": "dep.alexsantana@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/204571.jpg",
+      "url": "https://www.camara.leg.br/deputados/204571"
     },
     {
       "id": "220542",
@@ -2632,15 +2641,6 @@
       "url": "https://www.camara.leg.br/deputados/80815"
     },
     {
-      "id": "122195",
-      "nome": "Leonardo Gadelha",
-      "partido": "PODE",
-      "uf": "PB",
-      "email": "dep.leonardogadelha@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/122195.jpg",
-      "url": "https://www.camara.leg.br/deputados/122195"
-    },
-    {
       "id": "74156",
       "nome": "Leonardo Monteiro",
       "partido": "PT",
@@ -2929,15 +2929,6 @@
       "url": "https://www.camara.leg.br/deputados/133810"
     },
     {
-      "id": "204558",
-      "nome": "Marcelo Nilo",
-      "partido": "REPUBLICANOS",
-      "uf": "BA",
-      "email": "dep.marcelonilo@camara.leg.br",
-      "foto": "https://www.camara.leg.br/internet/deputado/bandep/204558.jpg",
-      "url": "https://www.camara.leg.br/deputados/204558"
-    },
-    {
       "id": "160161",
       "nome": "Marcelo Queiroz",
       "partido": "PSDB",
@@ -3111,7 +3102,7 @@
     {
       "id": "204566",
       "nome": "Marreca Filho",
-      "partido": "PRD",
+      "partido": "PODE",
       "uf": "MA",
       "email": "dep.marrecafilho@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/204566.jpg",
@@ -4034,6 +4025,15 @@
       "email": "dep.rogeriocorreia@camara.leg.br",
       "foto": "https://www.camara.leg.br/internet/deputado/bandep/204480.jpg",
       "url": "https://www.camara.leg.br/deputados/204480"
+    },
+    {
+      "id": "160629",
+      "nome": "Romero Rodrigues",
+      "partido": "PODE",
+      "uf": "PB",
+      "email": "dep.romerorodrigues@camara.leg.br",
+      "foto": "https://www.camara.leg.br/internet/deputado/bandep/160629.jpg",
+      "url": "https://www.camara.leg.br/deputados/160629"
     },
     {
       "id": "204525",
